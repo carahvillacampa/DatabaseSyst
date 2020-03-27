@@ -1,0 +1,56 @@
+
+/*
+Erica Filgueras
+CSC 355 Section 501
+problem1
+*/
+
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE 
+
+r1 withhold.rate1%type;
+r2 withhold.rate2%type;
+thresh withhold.threshold%type;
+payRow payroll%rowtype;
+netSalary payroll.esalary%type;
+
+taxwitheld NUMBER;
+tax_total1 NUMBER :=0;
+
+CURSOR payCursor is SELECT * FROM  payroll;
+    
+BEGIN
+    Select rate1, rate2, threshold 
+    into r1, r2, thresh 
+    from withhold;
+    
+    dbms_output.put_line('Rates : '||r1||','||r2);
+    dbms_output.put_line('Threshold : '||thresh);
+    dbms_output.put_line(' ');
+    
+    for payRow in payCursor
+    loop
+        
+        if(payRow.esalary <= thresh) then 
+            taxwitheld := payRow.esalary * (r1/100);
+            netSalary := payRow.esalary - taxwitheld;
+            tax_total1 := tax_total1 + taxwitheld;
+            
+            dbms_output.put_line(payRow.eid||' : '||payrow.esalary||' '||taxwitheld ||' '|| netSalary);
+        else
+            taxwitheld := (thresh * (r1/100)) + ((payRow.esalary - thresh)*(r2/100));
+            netSalary := payRow.esalary - taxwitheld;
+            tax_total1 := tax_total1 + taxwitheld;
+            
+            dbms_output.put_line(payRow.eid||' : '||payrow.esalary||' '|| taxwitheld ||' '|| netSalary);
+        end if;
+        
+        
+    end loop;
+    dbms_output.put_line(' ');
+    dbms_output.put_line('total: '|| tax_total1);
+    
+END;

@@ -1,0 +1,34 @@
+/*
+Erica Filgueras
+CSC 355 Sectio 501
+problem 2
+*/
+
+create or replace trigger restrictedCount after insert or update on payroll
+for each row
+declare
+
+monthSal NUMBER;
+countEmp NUMBER;
+
+begin 
+    Select count(esalary)
+    into monthSal
+    from payroll
+    where esalary > 10000;
+    
+    if (monthSal > 3) then
+        RAISE_APPLICATION_ERROR(-20001, 'cannot add more than 3 employees with more than 10000 monthly');
+    end if;
+end;
+
+/*
+-- To test restrictedCount trigger
+INSERT INTO PAYROLL VALUES ('34215', 'Heinz', 12000);
+INSERT INTO PAYROLL VALUES ('07002', 'Maraj', 16000);
+INSERT INTO PAYROLL VALUES ('81321', 'Shawn', 15000);
+--trigger fires
+INSERT INTO PAYROLL VALUES ('54099', 'Croak', 4000);
+
+Select * from payroll;
+*/
