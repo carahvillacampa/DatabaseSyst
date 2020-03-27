@@ -1,6 +1,3 @@
---Filgueras, Erica
---CSC 355- Database Systems
---01,29,2020
 
 
 --1 
