@@ -1,12 +1,4 @@
 
-/*
-Erica Filgueras
-CSC 355 Section 501
-problem1
-*/
-
-
-
 SET SERVEROUTPUT ON;
 
 DECLARE 
